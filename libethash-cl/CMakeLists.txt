@@ -33,5 +33,8 @@ include_directories(..)
 
 add_library(ethash-cl ${SOURCES})
 target_link_libraries(ethash-cl PUBLIC ethcore ethash::ethash)
-target_link_libraries(ethash-cl PRIVATE OpenCL::OpenCL)
-target_link_libraries(ethash-cl PRIVATE Boost::filesystem Boost::thread)
+target_link_libraries(ethash-cl PRIVATE OpenCL::OpenCL
+  Boost::filesystem
+  Boost::thread
+  jsoncpp_lib_static)
+

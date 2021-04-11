@@ -382,7 +382,7 @@ void Farm::restart()
  */
 void Farm::restart_async()
 {
-    m_io_strand.get_io_service().post(m_io_strand.wrap(boost::bind(&Farm::restart, this)));
+    m_io_strand.context().post(m_io_strand.wrap(boost::bind(&Farm::restart, this)));
 }
 
 /**
@@ -472,7 +472,7 @@ Json::Value Farm::get_nonce_scrambler_json()
     Json::Value jRes;
     jRes["start_nonce"] = toHex(m_nonce_scrambler, HexPrefix::Add);
     jRes["device_width"] = m_nonce_segment_with;
-    jRes["device_count"] = (uint64_t)m_miners.size();
+    jRes["device_count"] = (Json::UInt64)m_miners.size();
 
     return jRes;
 }

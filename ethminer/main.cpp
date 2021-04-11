@@ -222,9 +222,9 @@ public:
 
         app.set_help_flag();
         app.add_flag("-h,--help", bhelp, "Show help");
-
-        app.add_set("-H,--help-ext", shelpExt,
-            {
+        CLI::Option *opt = app.add_option("-H,--help-ext", shelpExt, "")
+            ->capture_default_str();
+        opt->check(CLI::IsMember({
                 "con", "test",
 #if ETH_ETHASHCL
                     "cl",
@@ -239,8 +239,7 @@ public:
                     "api",
 #endif
                     "misc", "env"
-            },
-            "", true);
+            }));
 
         bool version = false;
 
@@ -319,7 +318,9 @@ public:
 
         app.add_option("--cl-global-work", m_CLSettings.globalWorkSize, "", true);
 
-        app.add_set("--cl-local-work", m_CLSettings.localWorkSize, {64, 128, 256}, "", true);
+        opt = app.add_option("--cl-local-work", m_CLSettings.localWorkSize,"")
+            ->capture_default_str();
+        opt->check(CLI::IsMember({64, 128, 256}));
 
         app.add_flag("--cl-nobin", m_CLSettings.noBinary, "");
 
@@ -333,13 +334,14 @@ public:
 
         app.add_option("--cuda-grid-size,--cu-grid-size", m_CUSettings.gridSize, "", true)
             ->check(CLI::Range(1, 131072));
-
-        app.add_set(
-            "--cuda-block-size,--cu-block-size", m_CUSettings.blockSize, {32, 64, 128, 256}, "", true);
+        opt = app.add_option("--cuda-block-size,--cu-block-size",
+                             m_CUSettings.blockSize,"")->capture_default_str();
+        opt->check(CLI::IsMember({32, 64, 128, 256}));
 
         string sched = "sync";
-        app.add_set(
-            "--cuda-schedule,--cu-schedule", sched, {"auto", "spin", "yield", "sync"}, "", true);
+        opt = app.add_option("--cuda-schedule,--cu-schedule",
+                             sched, "")->capture_default_str();
+        opt->check(CLI::IsMember({"auto", "spin", "yield", "sync"}));
 
         app.add_option("--cuda-streams,--cu-streams", m_CUSettings.streams, "", true)
             ->check(CLI::Range(1, 99));

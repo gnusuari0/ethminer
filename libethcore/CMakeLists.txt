@@ -7,7 +7,9 @@ set(SOURCES
 include_directories(BEFORE ..)
 
 add_library(ethcore ${SOURCES})
-target_link_libraries(ethcore PUBLIC devcore ethash::ethash PRIVATE hwmon)
+target_link_libraries(ethcore
+  PUBLIC devcore ethash::ethash
+  PRIVATE hwmon jsoncpp_lib_static)
 
 if(ETHASHCL)
 	target_link_libraries(ethcore PRIVATE ethash-cl)

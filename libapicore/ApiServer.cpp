@@ -1062,7 +1062,7 @@ Json::Value ApiConnection::getMinerStatDetailPerMiner(
 
     auto solution_lastupdated = std::chrono::duration_cast<std::chrono::seconds>(
         _now - _t.miners.at(_index).solutions.tstamp);
-    jshares.append(uint64_t(solution_lastupdated.count()));  // interval in seconds from last found
+    jshares.append(Json::UInt64(solution_lastupdated.count()));  // interval in seconds from last found
                                                              // share
 
     mininginfo["shares"] = jshares;
@@ -1218,7 +1218,7 @@ Json::Value ApiConnection::getMinerStatDetail()
     /* Host Info */
     Json::Value hostinfo;
     hostinfo["version"] = ethminer_get_buildinfo()->project_name_with_version;  // miner version.
-    hostinfo["runtime"] = uint64_t(runningTime.count());  // running time, in seconds.
+    hostinfo["runtime"] = Json::UInt64(runningTime.count());  // running time, in seconds.
 
     {
         // Even the client should know which host was queried
@@ -1251,7 +1251,7 @@ Json::Value ApiConnection::getMinerStatDetail()
     sharesinfo.append(t.farm.solutions.failed);
     auto solution_lastupdated =
         std::chrono::duration_cast<std::chrono::seconds>(now - t.farm.solutions.tstamp);
-    sharesinfo.append(uint64_t(solution_lastupdated.count()));  // interval in seconds from last
+    sharesinfo.append(Json::UInt64(solution_lastupdated.count()));  // interval in seconds from last
                                                                 // found share
     mininginfo["shares"] = sharesinfo;
 
